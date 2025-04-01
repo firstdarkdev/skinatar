@@ -1,0 +1,34 @@
+services:
+  skinatar_watchtower:
+    image: containrrr/watchtower
+    command:
+      - "--label-enable"
+      - "--interval"
+      - "30"
+      - "--rolling-restart"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  skinatar_cache:
+    image: redis:alpine
+    container_name: "skinatar_cache"
+    restart: unless-stopped
+    networks:
+      - skinatar_docker
+
+  skinatar:
+    image: ghcr.io/firstdarkdev/skinatar:latest
+    restart: always
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    ports:
+      - 8080
+    volumes:
+      - ./storage:/app/cached_skins
+    environment:
+      REDIS_URL: skinatar_cache:5698
+    networks:
+      - skinatar_docker
+
+networks:
+  skinatar_docker:
