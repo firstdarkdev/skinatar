@@ -9,8 +9,8 @@ const skinCacheDir = "cached_skins"
 
 // Main entry point
 func main() {
-	cleanupCache()
 	os.MkdirAll(skinCacheDir, os.ModePerm)
+	cleanupCache()
 	initRedis()
 	initHttp()
 

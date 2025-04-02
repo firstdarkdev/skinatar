@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/mineatar-io/skin-render"
 	"image"
+	"image/png"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -74,7 +75,7 @@ func renderSkin(skinPath string, mode string, scale int, uid string, overlay boo
 	}
 	defer file.Close()
 
-	img, _, err := image.Decode(file)
+	img, err := png.Decode(file)
 	if err != nil {
 		return nil, err
 	}
@@ -98,7 +99,7 @@ func renderSkin(skinPath string, mode string, scale int, uid string, overlay boo
 		}), nil
 
 	// 3D head
-	case "isometric":
+	case "isometric", "head":
 		return skin.RenderHead(convertToNRGBA(img), skin.Options{
 			Scale:   scale / 16,
 			Slim:    skin.IsSlimFromUUID(uid),

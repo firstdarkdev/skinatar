@@ -26,8 +26,8 @@ func handleAvatar(w http.ResponseWriter, r *http.Request) {
 	scaleStr := r.URL.Query().Get("scale")
 
 	// Double check that the requested render is supported
-	if mode != "isometric" && mode != "body" && mode != "avatar" {
-		http.Error(w, "Unsupported render mode. Valid render modes are isometric, body & avatar", http.StatusBadRequest)
+	if mode != "isometric" && mode != "body" && mode != "avatar" && mode != "head" {
+		http.Error(w, "Unsupported render mode. Valid render modes are isometric, head, body & avatar", http.StatusBadRequest)
 		return
 	}
 
