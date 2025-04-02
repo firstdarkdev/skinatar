@@ -7,6 +7,7 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/mux v1.8.1
 	github.com/mineatar-io/skin-render v1.3.1
+	golang.org/x/time v0.11.0
 )
 
 require (

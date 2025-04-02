@@ -10,9 +10,11 @@ import (
 	"image/png"
 	"io"
 	"io/ioutil"
+	"net"
 	"net/http"
 	"os"
 	"regexp"
+	"strings"
 )
 
 // Helper method to convert images into the format expected by the skin renderer
@@ -108,4 +110,23 @@ func generateOfflineUUID(username string) uuid.UUID {
 	md5Hash[6] = (md5Hash[6] & 0x0f) | 0x30
 	md5Hash[8] = (md5Hash[8] & 0x3f) | 0x80
 	return uuid.UUID(md5Hash)
+}
+
+// Utility Function to handle IP address formatting for the Rate Limiter
+func getIP(r *http.Request) string {
+	ip := r.RemoteAddr
+
+	// We only care about the IP, so we split the port
+	host, _, err := net.SplitHostPort(ip)
+	if err != nil {
+		fmt.Println("Error parsing IP:", err)
+		return ""
+	}
+
+	// Remove Brackets from IPV6 addresses
+	if strings.HasPrefix(host, "[") && strings.HasSuffix(host, "]") {
+		host = host[1 : len(host)-1]
+	}
+
+	return host
 }

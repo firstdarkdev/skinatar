@@ -19,6 +19,15 @@ func initHttp() {
 
 // Handle the incoming avatar request.
 func handleAvatar(w http.ResponseWriter, r *http.Request) {
+	// Ratelimiter
+	ip := getIP(r)
+	limiter := getRateLimiter(ip)
+
+	if !limiter.Allow() {
+		http.Error(w, http.StatusText(http.StatusTooManyRequests), http.StatusTooManyRequests)
+		return
+	}
+
 	// Default values passed from URL
 	vars := mux.Vars(r)
 	identifier := vars["id"]
