@@ -23,10 +23,10 @@ func initRedis() {
 
 // Helper function to store skins in redis cache
 func cacheSkin(uuid string, cachePath string) {
-	redisClient.Set(ctx, "skin:"+uuid, cachePath, 1*time.Hour)
+	redisClient.Set(ctx, "skin:"+uuid, cachePath, 2*time.Hour)
 }
 
 // Helper function to store usernames in redis cache
 func cacheUsername(username string, uuid string) {
-	redisClient.Set(ctx, "username:"+username, uuid, 1*time.Hour)
+	redisClient.Set(ctx, "username:"+username, uuid, 2*time.Hour)
 }

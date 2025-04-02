@@ -18,7 +18,7 @@ func cleanupCache() {
 		if !info.IsDir() {
 			age := now.Sub(info.ModTime())
 
-			if age > time.Hour {
+			if age > 2*time.Hour {
 				err := os.Remove(path)
 				if err != nil {
 					fmt.Printf("Failed to remove file %s: %v\n", path, err)
@@ -36,7 +36,7 @@ func cleanupCache() {
 }
 
 func startCleanupRoutine() {
-	ticker := time.NewTicker(time.Hour)
+	ticker := time.NewTicker(2 * time.Hour)
 	defer ticker.Stop()
 
 	for {
