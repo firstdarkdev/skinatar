@@ -2,12 +2,14 @@ FROM golang:1.23.1-alpine AS build
 
 WORKDIR /app
 COPY . /app
+RUN apk add build-base libwebp-dev
 RUN go mod download
 RUN go build -o skinatar
 
 FROM alpine:latest
 
 COPY --from=build /app/skinatar /usr/local/bin/skinatar
+RUN apk add libwebp
 RUN ls -l /usr/local/bin/skinatar
 RUN chmod +x /usr/local/bin/skinatar
 
