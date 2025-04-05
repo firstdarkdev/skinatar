@@ -4,10 +4,10 @@ import (
 	"crypto/md5"
 	"encoding/json"
 	"fmt"
+	"github.com/chai2010/webp"
 	"github.com/google/uuid"
 	"image"
 	"image/draw"
-	"image/png"
 	"io"
 	"io/ioutil"
 	"net"
@@ -45,12 +45,17 @@ func downloadAndCacheSkin(skinURL string, cachePath string, uuid string) (string
 	}
 	defer file.Close()
 
-	// Decode the image and re-encode to PNG format
+	// Decode the image and re-encode to WEBP format
 	img, _, err := image.Decode(skinResp.Body)
 	if err != nil {
 		return "", err
 	}
-	png.Encode(file, img)
+
+	webp.Encode(file, img, &webp.Options{
+		Lossless: true,
+		Quality:  100,
+		Exact:    true,
+	})
 
 	cacheSkin(uuid, cachePath)
 	return cachePath, nil

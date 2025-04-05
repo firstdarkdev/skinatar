@@ -4,9 +4,9 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"github.com/chai2010/webp"
 	"github.com/mineatar-io/skin-render"
 	"image"
-	"image/png"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -15,7 +15,7 @@ import (
 
 // Skin fetcher. Here, we try to fetch the skin from the cache, via mojangs servers, and finally, fall back to crafthead.
 func fetchSkin(uuid string) (string, error) {
-	cachePath := filepath.Join(skinCacheDir, uuid+".png")
+	cachePath := filepath.Join(skinCacheDir, uuid+".webp")
 	if _, err := os.Stat(cachePath); err == nil {
 		return cachePath, nil
 	}
@@ -75,17 +75,9 @@ func renderSkin(skinPath string, mode string, scale int, uid string, overlay boo
 	}
 	defer file.Close()
 
-	img, err := png.Decode(file)
+	img, err := webp.Decode(file)
 	if err != nil {
 		return nil, err
-	}
-
-	// To prevent overload on the server, we enforce some limits on scaling.
-	// Not smaller than 16, so that it's visible, and not more than 1024px
-	if scale < 16 {
-		scale = 16
-	} else if scale > 1024 {
-		scale = 1024
 	}
 
 	switch mode {
