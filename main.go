@@ -13,8 +13,7 @@ func main() {
 	os.MkdirAll(skinCacheDir, os.ModePerm)
 	os.MkdirAll(renderDir, os.ModePerm)
 	cleanupCache()
+	go startCleanupRoutine()
 	initRedis()
 	initHttp()
-
-	go startCleanupRoutine()
 }

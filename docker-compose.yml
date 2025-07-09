@@ -24,7 +24,7 @@ services:
     ports:
       - 8080
     volumes:
-      - ./storage:/app/cached_skins
+      - ./storage:/cached_skins
     environment:
       REDIS_URL: skinatar_cache:5698
     networks:
